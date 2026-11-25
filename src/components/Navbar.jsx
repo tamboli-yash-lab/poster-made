@@ -28,6 +28,7 @@ export default function Navbar({
   onReset,
   selectedTierId,
   onSelectTier,
+  isPro,
   onOpenProModal,
   onExportPng,
   onExportZip,
@@ -49,7 +50,7 @@ export default function Navbar({
   }, []);
 
   const handleTierClick = (tier) => {
-    if (tier.isPro) {
+    if (tier.isPro && !isPro) {
       setExportOpen(false);
       onOpenProModal('resolution');
       return;
@@ -172,7 +173,8 @@ export default function Navbar({
                 </p>
                 <div className="space-y-1">
                   {EXPORT_TIERS.map((tier) => {
-                    const isSelected = selectedTierId === tier.id && !tier.isPro;
+                    const locked = tier.isPro && !isPro;
+                    const isSelected = selectedTierId === tier.id && !locked;
                     return (
                       <button
                         key={tier.id}
@@ -190,8 +192,14 @@ export default function Navbar({
                               {tier.label}
                             </span>
                             {tier.isPro ? (
-                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
-                                <Lock className="w-2.5 h-2.5" />
+                              <span
+                                className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                                  isPro
+                                    ? 'bg-indigo-100 text-indigo-800'
+                                    : 'bg-amber-100 text-amber-800'
+                                }`}
+                              >
+                                {!isPro && <Lock className="w-2.5 h-2.5" />}
                                 PRO
                               </span>
                             ) : (

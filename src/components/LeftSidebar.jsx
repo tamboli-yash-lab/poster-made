@@ -38,6 +38,7 @@ export default function LeftSidebar({
   onChangeBgPattern,
   branding,
   onUpdateBranding,
+  isPro,
   onOpenProModal,
 }) {
   const [activeTab, setActiveTab] = useState('content');
@@ -58,7 +59,7 @@ export default function LeftSidebar({
   };
 
   const handleThemeClick = (theme) => {
-    if (theme.isPro) {
+    if (theme.isPro && !isPro) {
       onOpenProModal('theme');
       return;
     }
@@ -66,11 +67,11 @@ export default function LeftSidebar({
   };
 
   const handleWatermarkToggle = () => {
-    if (branding.showWatermark) {
+    if (branding.showWatermark && !isPro) {
       onOpenProModal('watermark');
       return;
     }
-    onUpdateBranding({ showWatermark: true });
+    onUpdateBranding({ showWatermark: !branding.showWatermark });
   };
 
   return (
@@ -320,8 +321,14 @@ export default function LeftSidebar({
                           />
                         </div>
                         {theme.isPro && (
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
-                            <Lock className="w-2.5 h-2.5" />
+                          <span
+                            className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                              isPro
+                                ? 'bg-indigo-100 text-indigo-800'
+                                : 'bg-amber-100 text-amber-800'
+                            }`}
+                          >
+                            {!isPro && <Lock className="w-2.5 h-2.5" />}
                             PRO
                           </span>
                         )}
@@ -545,9 +552,15 @@ export default function LeftSidebar({
                       <span className="text-xs font-semibold text-[#0F172A]">
                         Watermark
                       </span>
-                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
-                        <Lock className="w-2.5 h-2.5" />
-                        PRO to remove
+                      <span
+                        className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                          isPro
+                            ? 'bg-indigo-100 text-indigo-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
+                      >
+                        {!isPro && <Lock className="w-2.5 h-2.5" />}
+                        {isPro ? 'PRO UNLOCKED' : 'PRO to remove'}
                       </span>
                     </div>
                     <p className="text-[11px] text-[#64748B] mt-1">

@@ -40,6 +40,13 @@ export default function App() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [selectedTierId, setSelectedTierId] = useState(EXPORT_TIERS[0].id);
   const [mobileView, setMobileView] = useState('preview'); // 'editor' | 'preview'
+  const [isPro, setIsPro] = useState(() => {
+    try {
+      return localStorage.getItem(BRAND_CONFIG.proStorageKey) === 'true';
+    } catch {
+      return false;
+    }
+  });
   const [proModal, setProModal] = useState({ open: false, reason: 'watermark' });
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
@@ -240,6 +247,7 @@ export default function App() {
         onReset={handleReset}
         selectedTierId={selectedTierId}
         onSelectTier={setSelectedTierId}
+        isPro={isPro}
         onOpenProModal={(reason) => setProModal({ open: true, reason })}
         onExportPng={handleExportPng}
         onExportZip={handleExportZip}
@@ -316,6 +324,7 @@ export default function App() {
                 branding: { ...p.branding, ...patch },
               }))
             }
+            isPro={isPro}
             onOpenProModal={(reason) => setProModal({ open: true, reason })}
           />
         </div>
@@ -401,6 +410,7 @@ export default function App() {
         isOpen={proModal.open}
         triggerReason={proModal.reason}
         onClose={() => setProModal((prev) => ({ ...prev, open: false }))}
+        onUnlockPro={() => setIsPro(true)}
       />
     </div>
   );

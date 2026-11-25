@@ -52,8 +52,8 @@ export const DEFAULT_PROJECT_STATE = {
   fontScale: 'balanced',
   bgPattern: 'dot-grid',
   branding: {
-    authorName: 'Alex Rivera',
-    handle: '@alexrivera.design',
+    authorName: 'Get Your Poster Made',
+    handle: '@getyourpostermade',
     avatar: null,
     showWatermark: true,
   },
